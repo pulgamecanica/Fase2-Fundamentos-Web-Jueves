@@ -23,7 +23,7 @@ post '/rolls' do
 
   @win = "WINNER!!" if @rolls.map! { |roll| roll.value }.uniq.count == 1
  
-  if request.xhr?
+if request.xhr?
   p "soy XHR"
   erb :_die_roll, layout: false
 else
