@@ -1,71 +1,92 @@
-get '/' do
-  # La siguiente linea hace render de la vista 
-  # que esta en app/views/index.erb
-  @tags_total = Tag.all
-  @posts_total = Post.all
-  erb :index
-end
-
 post '/newpost' do
   title = params[:yourposttitle]
   content = params[:yourpost]
-  tag1 = params[:yourtag1]
-  tag2 = params[:yourtag2]
-  tag3 = params[:yourtag3]
-  new_post = Post.create(title: title, content: content)
-  tag1_1 = Tag.create(name: tag1)
-  tag2_1 = Tag.create(name: tag2)
-  tag3_1 = Tag.create(name: tag3)
-  relation1 = Relation.create(post_id: new_post.id, tag_id: tag1_1.id)
-  relation2 =Relation.create(post_id: new_post.id, tag_id: tag2_1.id)
-  relation3 =Relation.create(post_id: new_post.id, tag_id: tag3_1.id)
-  if new_post.save
-  p   "Saved post"
-
-  elsif tag1_1.save
-  p  "Saved tag1"
-
-  elsif relation1.save
-  p  "Saved relation1"
-
-  elsif tag2_1.save
-  p  "Saved tag2"
-  
-  elsif relation2.save
-  p  "Saved relation2"
-
-  elsif tag3_1.save
-  p  "Saved tag3"
-
-  elsif relation3.save
-  p  "Saved relation3"
-
+  p "-"*100
+  p tag_all = params[:post]
+  tags = tag_all.values*""
+  p tag = tags.split(', ')
+  post1 = Post.create(title: title, content: content)
+  tag.each do |x|
+    if Tag.exists?(name: x) != true
+      relation_tag = Tag.create(name: x)
+    else
+      relation_tag = Tag.find_by(name: x)
+    end
+  relation = Relation.create(post_id: post1.id, tag_id: relation_tag.id)
+end
+  if post1.save
+    puts "*"*100
+    puts "post saved"
+  elsif relation_tag.save
+  puts "*"*100
+  puts "tag saved"
+   elsif relation.save 
+  puts "*"*100
+  puts "relation saved"
   else
-  p "Error"
-   end
-   redirect to '/'
+  puts "*"*100
+  puts "Error"
 end
-# get '/login' do
-#   @user = User.find(session[:id])
-#   @urls_total_user = @user.urls.order('visits DESC')
-#    erb :login_user
-# end
-
-# get '/logout' do
-#   session.clear
-#   redirect '/'
-# end
-
-get '/search_by_tag' do
-  puts "dentro de get /search_by_tag"
-  p tag_input = params[:searchtag]
-  p @show_post = Tag.find_by(name: tag_input).posts
-  # @show_post.each do |x|
-  #   p "OBJETO #{x}"
-  # end
-
-  erb :post_tag
+redirect to '/'
 end
+
+
+get '/search_edit' do
+  puts "dentro de edit /search_edit"
+  @post = params[:search_edit_post]
+if Post.find_by(title: @post) == nil
+   puts "that post doesent exist"
+redirect to '/'
+else
+   @the_post = Post.find_by(title: @post)
+   erb :posts
+end
+end
+
+
+post '/delete' do
+  "*"*100
+  params[:post_id]
+  a = Post.find(params[:post_id])
+  a.tags.destroy
+  a.destroy
+redirect to '/'
+end
+
+post '/update' do
+  title = params[:title_update]
+  content  = params[:content_update]
+  tags  = params[:post]
+  params[:post_id]
+  post = Post.find(params[:post_id])
+  post.update(title: title, content: content)
+  
+  tags_all = tags.values*""
+  p tag = tags_all.split(', ')
+  tag.each do |x|
+    if Tag.exists?(name: x) != true
+      relation_tag = Tag.create(name: x)
+    else
+      relation_tag = Tag.find_by(name: x)
+    end
+  relation = Relation.create(post_id: post.id, tag_id: relation_tag.id)
+end
+  if post.save
+    puts "*"*100
+    puts "post saved"
+  elsif relation_tag.save
+  puts "*"*100
+  puts "tag saved"
+   elsif relation.save 
+  puts "*"*100
+  puts "relation saved"
+  else
+  puts "*"*100
+  puts "Error"
+end
+redirect to '/'
+end
+
 
 
 

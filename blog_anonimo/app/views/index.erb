@@ -2,7 +2,7 @@
   <img src="http://www.codea.mx/assets/Logo_CodeaCamp.png"></img>
 </a>
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-10">
     <div class="jumbotron">
       <br>
       <br>
@@ -28,10 +28,9 @@
                     <br> 
                     <br>
                    <p>Select your tag/s<p>
-                    <input id="yourtag1" class="form-control" type="text" name="yourtag1" placeholder="Tag..."> 
-                    <input id="yourtag2" class="form-control" type="text" name="yourtag2" placeholder="Tag...">
-                    <input id="yourtag3" class="form-control" type="text" name="yourtag3" placeholder="Tag...">
-                    <input id="sendpost" class="form-control" type="submit" value="Send your anonymous post">
+                  <label for="post_tags">Tags:</label>
+                  <input id="post_tags" name="post[tags]" placeholder="tag1, tag2, otro tag, cuarto tag">
+                  <input id="sendpost" class="form-control" type="submit" value="Send your anonymous post">
                   </div>
                 </div>
               </div>
@@ -53,7 +52,7 @@
     <input id="sendtag6" class="form-control" type="submit" value="Go!">
   </form>
 <p>Search/edit a post by his name(title)</p>
-<form id="search_edit" action="/search_edit" method="post"name="formpost">
+<form id="search_edit" action="/search_edit" method="get"name="formpost">
 <input id="search_edit_post" class="form-control" type="text" name="search_edit_post" placeholder="Post name">
 <input id="searchpost" class="form-control" type="submit" value="Search post">
 </form>
